@@ -70,7 +70,7 @@ public extension Response {
             // Can do anything ....
         }
         
-        if let jsonObject = extractor.extracting?(data) {
+        if let jsonObject = try extractor.extracting?(data) {
             return jsonObject
         } else {
             return try extractRaw(atKeyPath: keyPath)

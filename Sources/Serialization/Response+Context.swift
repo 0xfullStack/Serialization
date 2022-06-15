@@ -13,7 +13,7 @@ public protocol SerializeContext {}
 
 public struct Extrator {
     public let context: SerializeContext?
-    public let extracting: ((Data)->Any?)?
+    public let extracting: ((Data)throws -> Any?)?
     
     public init(context: SerializeContext? = nil, extracting: ((Data)->Any)? = nil) {
         self.context = context
