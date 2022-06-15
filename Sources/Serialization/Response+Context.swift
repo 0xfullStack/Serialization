@@ -15,7 +15,7 @@ public struct Extrator {
     public let context: SerializeContext?
     public let extracting: ((Data)throws -> Any?)?
     
-    public init(context: SerializeContext? = nil, extracting: ((Data)->Any)? = nil) {
+    public init(context: SerializeContext? = nil, extracting: ((Data)throws->Any)? = nil) {
         self.context = context
         self.extracting = extracting
     }
