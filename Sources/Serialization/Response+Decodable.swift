@@ -63,7 +63,7 @@ public extension Response {
     private func extract(atKeyPath keyPath: String? = nil, extractor: Extrator = .default) throws -> Any {
         
         if statusCode >= 500 {
-            throw ReponseErrorType.serverSide
+            throw MoyaError.statusCode(self)
         }
         
         if let _ = extractor.context  {

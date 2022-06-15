@@ -22,8 +22,3 @@ public struct Extrator {
     
     public static let `default` = Extrator()
 }
-
-public enum ReponseErrorType: Error, LocalizedError {
-    case serverSide
-    case customn(Error)
-}
