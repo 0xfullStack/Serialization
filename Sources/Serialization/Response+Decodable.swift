@@ -55,7 +55,7 @@ public extension Response {
             let object = try JSONDecoder().decode(T.self, from: data)
             return object
         } catch {
-            throw MoyaError.jsonMapping(self)
+            throw MoyaError.objectMapping(error, self)
         }
     }
     
