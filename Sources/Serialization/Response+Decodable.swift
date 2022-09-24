@@ -59,6 +59,16 @@ public extension Response {
         }
     }
     
+    func mapVoid(extractor: Extrator = Extrator.default) throws {
+        do {
+            let json = try extract(extractor: extractor)
+            let _ = try JSONSerialization.data(withJSONObject: json)
+            return try mapVoid()
+        } catch {
+            throw MoyaError.objectMapping(error, self)
+        }
+    }
+    
     @discardableResult
     private func extract(atKeyPath keyPath: String? = nil, extractor: Extrator = .default) throws -> Any {
         
