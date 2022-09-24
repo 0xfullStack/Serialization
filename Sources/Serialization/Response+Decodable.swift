@@ -10,28 +10,29 @@ import Moya
 
 /// Extension for processing Responses into frequently used objects
 public extension Response {
-    func mapVoid() throws {
-        try extract()
+    
+    func mapVoid(extractor: Extrator = Extrator.default) throws {
+        try extract(extractor: extractor)
     }
 
-    func mapStringArray() throws -> [String] {
-        let jsonObject: Any? = try extract()
+    func mapStringArray(extractor: Extrator = Extrator.default) throws -> [String] {
+        let jsonObject: Any? = try extract(extractor: extractor)
         if let object = jsonObject as? [String] {
             return object
         }
         throw MoyaError.jsonMapping(self)
     }
 
-    func mapDictionary() throws -> [String: String] {
-        let jsonObject: Any? = try extract()
+    func mapDictionary(extractor: Extrator = Extrator.default) throws -> [String: String] {
+        let jsonObject: Any? = try extract(extractor: extractor)
         if let object = jsonObject as? [String: String] {
             return object
         }
         return [:]
     }
     
-    func mapCustomString(atKeyPath keyPath: String? = nil) throws -> String {
-        let jsonObject: Any? = try extract(atKeyPath: keyPath)
+    func mapCustomString(atKeyPath keyPath: String? = nil, extractor: Extrator = Extrator.default) throws -> String {
+        let jsonObject: Any? = try extract(atKeyPath: keyPath, extractor: extractor)
         if let keyPath = keyPath {
             if let string = ((jsonObject as? NSDictionary)?.value(forKeyPath: keyPath)) as? String {
                 return string
@@ -44,9 +45,6 @@ public extension Response {
             throw MoyaError.jsonMapping(self)
         }
     }
-}
-
-public extension Response {
     
     func mapObject<T: Decodable>(_ type: T.Type, atKeyPath keyPath: String? = nil, extractor: Extrator = Extrator.default) throws -> T {
         do {
@@ -58,11 +56,12 @@ public extension Response {
             throw MoyaError.objectMapping(error, self)
         }
     }
+}
+
+public extension Response {
     
-    func mapVoid(extractor: Extrator = Extrator.default) throws {
-        try extract(extractor: extractor)
-    }
-    
+     
+    // Extract response data by extractor's customn extracting block
     @discardableResult
     private func extract(atKeyPath keyPath: String? = nil, extractor: Extrator = .default) throws -> Any {
         
@@ -81,6 +80,7 @@ public extension Response {
         }
     }
     
+    // Extract response data directly, no extractor
     func extractRaw(atKeyPath keyPath: String? = nil) throws -> Any {
         var json = try mapJSON()
         if let keyPath = keyPath,
