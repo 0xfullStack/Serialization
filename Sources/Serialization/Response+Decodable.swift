@@ -60,12 +60,7 @@ public extension Response {
     }
     
     func mapVoid(extractor: Extrator = Extrator.default) throws {
-        do {
-            let json = try extract(extractor: extractor)
-            return try mapVoid()
-        } catch {
-            throw MoyaError.objectMapping(error, self)
-        }
+        try extract(extractor: extractor)
     }
     
     @discardableResult
